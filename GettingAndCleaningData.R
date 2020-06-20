@@ -30,13 +30,12 @@ dateDownloaded
 list.files("./data")
 
 # Look at the data 
-AmericanConsumer <- data.frame("./data/AmericanConsumer")
-glimpse("./data/AmericanConsumer")
+survey <- data.frame(read.csv("./data/AmericanConsumer", header = TRUE))
+str(survey)
+glimpse(survey)
+head(survey)
+tail(survey)
 
+# Segment the file for getting anssers
+filter(survey, VAL == 24)
 
-
-setwd("./data")
-getwd()
-list.files()
-glimpse("AmericanConsumer")
-class("AmericanConsumer")

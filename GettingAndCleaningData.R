@@ -55,14 +55,14 @@ survey$FES
 # Question 3
 # Read excel file https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx into a variable names dat
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx"
-download.file(fileUrl, destfile = "./data/dat.xlsx")
+download.file(fileUrl, destfile = "./data/gov_NGAP.xlsx")
 dateDownloaded <- date()
 dateDownloaded
 list.files("./data")
 
 
 # Put data into a data frame or data table if very large, then look at the data 
-read_excel("C:/Users/paulr/Documents/R/GettingAndCleaningData/data/dat.xlsx", sheet = 1, col_names = TRUE, col_types = NULL, na = "", skip = 0)
+dat <- read_excel("C:/Users/paulr/Documents/R/GettingAndCleaningData/data/gov_NGAP.xlsx", col_names = TRUE, na = "")
 
 
 survey <- data.frame(read.csv("./data/dat", header = TRUE))

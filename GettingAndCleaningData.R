@@ -12,6 +12,7 @@ library("kableExtra")
 library("fpp2")
 library("openxlsx")
 library("XML")
+library("data.table")
 
 
 # Set proper working Dir
@@ -92,3 +93,46 @@ nrow(answer[codes == 21231,])
 
 
 # Question 5
+# download https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv store in DT
+# get average of $pwgtp15
+# Set proper working Dir
+if (!getwd() == "C:/Users/paulr/Documents/R/GettingAndCleaningData") {setwd("./GettingAndCleaningData")}
+getwd()
+
+# Check for data directory and if one is not present then make it
+if (!file.exists("data")) {
+  dir.create("data")
+}
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv"
+download.file(fileUrl, destfile = "./data/Fss06pid.csv")
+dateDownloaded <- date()
+DT <- fread("./data/Fss06pid.csv")
+start <- Sys.time()
+rowMeans(DT)[DT$SEX==1]; rowMeans(DT)[DT$SEX==2]
+finish <- Sys.time()
+finish - start 
+
+start <- Sys.time()
+mean(DT$pwgtp15, by=DT$SEX)
+finish <- Sys.time()
+finish - start 
+
+start <- Sys.time()
+mean(DT[DT$SEX==1,]$pwgtp15); mean(DT[DT$SEX==2,]$pwgtp15)
+finish <- Sys.time()
+finish - start 
+
+start <- Sys.time()
+sapply(split(DT$pwgtp15, DT$SEX), mean)
+finish <- Sys.time()
+finish - start 
+
+start <- Sys.time()
+tapply(DT$pwgtp15, DT$SEX, mean)
+finish <- Sys.time()
+finish - start 
+
+start <- Sys.time()
+DT[,mean(pwgtp15), by=SEX]
+finish <- Sys.time()
+finish - start 

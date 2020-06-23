@@ -10,7 +10,8 @@ library("lubridate")
 library("knitr")
 library("kableExtra")
 library("fpp2")
-library("readxl")
+library("openxlsx")
+library("XML")
 
 
 # Set proper working Dir
@@ -57,16 +58,37 @@ survey$FES
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx"
 download.file(fileUrl, destfile = "./data/gov_NGAP.xlsx")
 dateDownloaded <- date()
-dateDownloaded
-list.files("./data")
-
 
 # Put data into a data frame or data table if very large, then look at the data 
-dat <- read_excel("C:/Users/paulr/Documents/R/GettingAndCleaningData/data/gov_NGAP.xlsx", col_names = TRUE, na = "")
+rowIndex <- 18:23
+colIndex <- 7:15
+dat <- read.xlsx("C:/Users/paulr/Documents/R/GettingAndCleaningData/data/gov_NGAP.xlsx", 
+                 sheet = 1, cols = colIndex, rows = rowIndex)
+sum(dat$Zip*dat$Ext,na.rm=T)
 
 
-survey <- data.frame(read.csv("./data/dat", header = TRUE))
-str(survey)
-glimpse(survey)
-head(survey)
-tail(survey)
+#Question 4
+# https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml
+# Set proper working Dir
+if (!getwd() == "C:/Users/paulr/Documents/R/GettingAndCleaningData") {setwd("./GettingAndCleaningData")}
+getwd()
+
+# Check for data directory and if one is not present then make it
+if (!file.exists("data")) {
+  dir.create("data")
+}
+
+# Get file 
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
+download.file(fileUrl, destfile = "./data/Frestaurants.xml")
+dateDownloaded <- date()
+doc <- xmlTreeParse("./data/Frestaurants.xml", useInternal=TRUE)
+rootNode <- xmlRoot(doc)
+codes <- (xpathSApply(rootNode, "//zipcode", xmlValue))
+names <- (xpathSApply(rootNode, "//name", xmlValue))
+answer <- data.frame("names" = names, "zipcode" = codes)
+glimpse(answer)
+nrow(answer[codes == 21231,])
+
+
+# Question 5

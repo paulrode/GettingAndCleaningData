@@ -136,3 +136,8 @@ start <- Sys.time()
 DT[,mean(pwgtp15), by=SEX]
 finish <- Sys.time()
 finish - start 
+
+
+
+# Week 2
+# https://github.com/paulrode/httr/blob/master/demo/oauth2-github.r location of demo which i forked into my Git Repo listing for API access and question 1

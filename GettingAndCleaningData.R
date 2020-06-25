@@ -13,6 +13,7 @@ library("fpp2")
 library("openxlsx")
 library("XML")
 library("data.table")
+library("httr")
 
 
 # Set proper working Dir
@@ -140,4 +141,20 @@ finish - start
 
 
 # Week 2
-# https://github.com/paulrode/httr/blob/master/demo/oauth2-github.r location of demo which i forked into my Git Repo listing for API access and question 1
+# https://github.com/paulrode/httr/blob/master/demo/oauth2-github.r location of demo 
+# which i forked into my Git Repo listing for API access and question 1
+# https://github.com/settings/applications/1323008 my registered API app
+# Client ID:  e61cdf7b1bfa1692a861
+# Client Secret: 51d4844467e47d72dc8e3dc3dea3a05ded011618
+
+myapp = oauth_app("github", 
+                  key="e61cdf7b1bfa1692a861", secret= "51d4844467e47d72dc8e3dc3dea3a05ded011618")
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+gtoken <- config(token = github_token)
+req <- GET("https://api.github.com/rate_limit", gtoken)
+stop_for_status(req)
+content(req)
+
+
+
+sig = sign_oauth1.0(myapp, gtoken)

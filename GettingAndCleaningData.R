@@ -14,6 +14,7 @@ library("openxlsx")
 library("XML")
 library("data.table")
 library("httr")
+library("jsonlite")
 
 
 # Set proper working Dir
@@ -141,20 +142,23 @@ finish - start
 
 
 # Week 2
+# Question 1 
 # https://github.com/paulrode/httr/blob/master/demo/oauth2-github.r location of demo 
 # which i forked into my Git Repo listing for API access and question 1
 # https://github.com/settings/applications/1323008 my registered API app
 # Client ID:  e61cdf7b1bfa1692a861
 # Client Secret: 51d4844467e47d72dc8e3dc3dea3a05ded011618
 
+#Set up the app
 myapp = oauth_app("github", 
                   key="e61cdf7b1bfa1692a861", secret= "51d4844467e47d72dc8e3dc3dea3a05ded011618")
-github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
-gtoken <- config(token = github_token)
-req <- GET("https://api.github.com/rate_limit", gtoken)
-stop_for_status(req)
-content(req)
+sig = sign_oauth1.0(myapp)
+reg <- GET("https://api.github.com/users/jtleek/repos", sig)
+
+#Use the app to get a json page from which to bring into a data frame 
+json1 = content(reg)
+json2 = jsonlite::fromJSON(toJSON(json1))
+json2[ , c(3 == "datasharing",47)]
+json2 %>% filter(name == "datasharing") %>% select(name, created_at)
 
 
-
-sig = sign_oauth1.0(myapp, gtoken)

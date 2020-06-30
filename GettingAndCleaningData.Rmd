@@ -12,7 +12,7 @@ library("tidyverse")
 library("lubridate")
 # Package for building tables in markdown and notebook 
 library("knitr")
-library("kableExtra")
+library("kableExtra") 
 # Package for forecasting
 library("fpp2")
 # Packages for reading excel and html files and XML

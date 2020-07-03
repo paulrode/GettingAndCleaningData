@@ -289,9 +289,10 @@ list.files("./data")
 # Put data into a data frame or data table if very large, then look at the data 
 survey <- data.frame(read.csv("./data/AmericanConsumer", header = TRUE))
 
-mutate(survey, test = (ACR < 3))
-
-
+# Make the logical vector using conditions
+agricultureLogical <- (survey$ACR == 3 & survey$AGS == 6)
+# which() returns the indicies of the condition  
+which(agricultureLogical, TRUE)
 
 
 

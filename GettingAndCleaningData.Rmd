@@ -28,7 +28,6 @@ library("jsonlite")
 # Package for performing inquires with SQL databases 
 library("sqldf")
 #Package for reading and writing to jpeg files
-install.packages("jpeg")
 library("jpeg")
 
 # Set proper working Dir
@@ -310,12 +309,12 @@ Use the parameter native=TRUE. What are the 30th and 80th quantiles of the resul
 
 # Download data using a URL into th data directory
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fjeff.jpg"
-download.file(fileUrl, destfile = "./data/picture")
+download.file(fileUrl, destfile = "./data/picture.jpg")
 dateDownloaded <- date()
 list.files("./data")
 
 # Read jpeg into R and execute the quantile command
-picture.r <- readJPEG("./data/picture", native = TRUE) 
+picture.r <- readJPEG("./data/picture.jpg", native = TRUE) 
 glimpse(picture.r)
 head(picture.r)
 tail(picture.r)

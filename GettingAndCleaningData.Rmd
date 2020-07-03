@@ -345,6 +345,7 @@ http://data.worldbank.org/data-catalog/GDP-ranking-table
 
 http://data.worldbank.org/data-catalog/ed-stats
 
+
 ```{r}
 
 # Download data using a URL into th data directory
@@ -361,11 +362,19 @@ gpd.r <- data.frame(read.csv("./data/gpd", header = TRUE))
 education.r <- data.frame(read.csv("./data/education", header = TRUE))
 glimpse(gpd.r)
 glimpse(education.r)
+colnames(gpd.r)[1] = "CountryCode"
 head(gpd.r)
 head(education.r)
 
-#set up and execute the merge() function
-#gpd_education <- merge(gpd.r, education.r, by = )
 
-merge```
+#set up and execute the merge() function
+gpd_education <- merge(gpd.r, education.r, by = "CountryCode", sort = TRUE )
+gpd_education$Gross.domestic.product.2012 <- as.numeric(gpd_education$Gross.domestic.product.2012)
+gpd_education <- arrange(gpd_education, desc(Gross.domestic.product.2012))
+glimpse(gpd_education)
+str(gpd_education)
+gpd_education[1:50,]
+view(gpd_education)
+
+```
 

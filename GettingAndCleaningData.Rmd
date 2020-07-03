@@ -264,6 +264,7 @@ sum(as.numeric(con$col3))
 Week 3 Subsetting and sorting 
 
 Question #1 
+
 The American Community Survey distributes downloadable data about United States communities. Download the 2006 microdata survey about housing for the state of Idaho using download.file() from here:
 
 https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv
@@ -308,6 +309,7 @@ Use the parameter native=TRUE. What are the 30th and 80th quantiles of the resul
 ```{r}
 
 # Download data using a URL into th data directory
+# Note down.load did not work for this problem. It has an issue with jpeg photos. 
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fjeff.jpg"
 download.file(fileUrl, destfile = "./data/picture.jpg")
 dateDownloaded <- date()
@@ -326,6 +328,7 @@ quantile(picture.r, probs = c(0, .3, .5, .8, 1)   ,na.rm = TRUE)
 
 
 Question #3
+
 Load the Gross Domestic Product data for the 190 ranked countries in this data set:
 
 https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv
@@ -344,9 +347,25 @@ http://data.worldbank.org/data-catalog/ed-stats
 
 ```{r}
 
+# Download data using a URL into th data directory
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
+download.file(fileUrl, destfile = "./data/gpd")
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
+download.file(fileUrl, destfile = "./data/education")
+dateDownloaded <- date()
+dateDownloaded
+list.files("./data")
 
+# Put data into a data frame or data table if very large, then look at the data 
+gpd.r <- data.frame(read.csv("./data/gpd", header = TRUE))
+education.r <- data.frame(read.csv("./data/education", header = TRUE))
+glimpse(gpd.r)
+glimpse(education.r)
+head(gpd.r)
+head(education.r)
 
+#set up and execute the merge() function
+#gpd_education <- merge(gpd.r, education.r, by = )
 
-
-```
+merge```
 

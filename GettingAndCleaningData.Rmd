@@ -426,14 +426,14 @@ education.r <- data.frame(read.csv("./data/education", header = TRUE))
 colnames(gpd.r)[1:2] = c("CountryCode", "Gross.domestic.product.2012")
 gpd_edu <- merge(gpd.r, education.r)
 gpd_edu %>% arrange(desc(Gross.domestic.product.2012)) -> gpd_edu
-quantile(gpd_edu$Gross.domestic.product.2012 , probs =  c(0, .25, .5, .75, 1), na.rm = TRUE)
+quantile(gpd_edu$Gross.domestic.product.2012 , probs =  c( .2, .4, .6, .8, 1), na.rm = TRUE)
 
 
 
 gpd_edu %>% group_by(Income.Group) %>% summarize(Income.Group, by())
 
 sum(gpd_edu$Gross.domestic.product.2012)
-glimpse(gpd_edu)
+view(gpd_edu)
 glimpse(education.r)
 str(education.r)
 

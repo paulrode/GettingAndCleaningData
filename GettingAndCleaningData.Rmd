@@ -183,15 +183,16 @@ json1 = content(reg)
 json2 = jsonlite::fromJSON(toJSON(json1))
 json2[ , c(3 == "datasharing",47)]
 json2 %>% filter(name == "datasharing") %>% select(name, created_at)
+```
 
+Question 2 
+ The sqldf package allows for execution of SQL commands on R data 
+ frames. We will use the sqldf package to practice the queries we 
+ might send with the dbSendQuery command in RMySQL.
+ Download Download the American Community Survey data and load it 
+ into an R object called acs.            https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv
 
-# Question 2
-# The sqldf package allows for execution of SQL commands on R data 
-# frames. We will use the sqldf package to practice the queries we 
-# might send with the dbSendQuery command in RMySQL.
-# Download Download the American Community Survey data and load it 
-# into an R object called acs. https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv
-
+```{r}
 # Set proper working Dir
 if (!getwd() == "C:/Users/paulr/Documents/R/GettingAndCleaningData") {setwd("./GettingAndCleaningData")}
 getwd()
@@ -410,6 +411,7 @@ are Lower middle income but among the 38 nations with highest GDP?
 ```{r}
 
 # Download data using a URL into th data directory
+
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
 download.file(fileUrl, destfile = "./data/gpd")
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
@@ -422,4 +424,19 @@ list.files("./data")
 gpd.r <- data.frame(read.csv("./data/gpd", skip = 4, nrows = 190L))
 education.r <- data.frame(read.csv("./data/education", header = TRUE))
 colnames(gpd.r)[1:2] = c("CountryCode", "Gross.domestic.product.2012")
-gpd.r %>% arrange(desc(Gross.domestic.product.2012))
+gpd_edu <- merge(gpd.r, education.r)
+gpd_edu %>% arrange(desc(Gross.domestic.product.2012)) -> gpd_edu
+quantile(gpd_edu$Gross.domestic.product.2012 , probs =  c(0, .25, .5, .75, 1), na.rm = TRUE)
+
+
+
+gpd_edu %>% group_by(Income.Group) %>% summarize(Income.Group, by())
+
+sum(gpd_edu$Gross.domestic.product.2012)
+glimpse(gpd_edu)
+glimpse(education.r)
+str(education.r)
+
+data.frame(levels(education.r$Income.Group))
+
+```

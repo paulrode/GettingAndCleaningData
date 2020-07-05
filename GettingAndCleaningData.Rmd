@@ -369,6 +369,11 @@ ans <- merge(gpd.r, education.r)
 arrange(ans, desc(Gross.domestic.product.2012  )) -> ans
 ans[13,]
 
+
+glimpse(education.r)
+education.r$CountryCode
+gpd.r$CountryCode
+
 ```
 
 
@@ -470,6 +475,53 @@ strsplit(names(idaho.r), "wgtp")[[123]]
 ```
 
 
+Question 2 
+Load the Gross Domestic Product data for the 190 ranked countries in this data set:
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv
+
+Remove the commas from the GDP numbers in millions of dollars and average them. What is the average?
+
+Original data sources:
+
+http://data.worldbank.org/data-catalog/GDP-ranking-table
+
+
+```{r}
+
+# Download data using a URL into th data directory
+
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
+download.file(fileUrl, destfile = "./data/survey")
+
+
+dateDownloaded <- date()
+dateDownloaded
+list.files("./data")
+
+# Put data into a data frame or data table if very large, then look at the data 
+survey.r <- data.frame(read.csv("./data/survey", skip = 4, nrows = 190))
+colnames(survey.r)[1:5] = c("CountryCode", "Gross.domestic.product.2012", "X.2", "long Name", "Gross Domestic Product")
+glimpse(survey.r)
+head(survey.r,10)
+tail(survey.r, 10)
+unique(survey.r)
+
+# Remove the comma in the GDP column and average together. 
+survey.r$Gross.domestic.product.2012 <- as.numeric(gsub(",", "", survey.r$`Gross Domestic Product`))
+summarise(survey.r, meanGDP = mean(Gross.domestic.product.2012), sumGDP = sum(Gross.domestic.product.2012))
+
+
+```
+
+Question 3
+
+In the data set from Question 2 what is a regular expression that would allow you to count the number of countries whose name begins with "United"? Assume that the variable with the country names in it is named countryNames. How many countries begin with United?
+
+```{r}
 
 
 
+
+
+```

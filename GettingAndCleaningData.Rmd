@@ -524,8 +524,6 @@ In the data set from Question 2 what is a regular expression that would allow yo
 
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
 download.file(fileUrl, destfile = "./data/survey")
-
-
 dateDownloaded <- date()
 dateDownloaded
 list.files("./data")
@@ -533,14 +531,94 @@ list.files("./data")
 # Put data into a data frame or data table if very large, then look at the data 
 survey.r <- data.frame(read.csv("./data/survey", skip = 4, nrows = 190))
 colnames(survey.r)[1:5] = c("CountryCode", "Gross.domestic.product.2012", "X.2", "long Name", "Gross Domestic Product")
-survey.r %>% select(`long Name`) -> survey.r
-survey.r$`long Name`[^United]
-
+survey.r %>% select(`long Name`, CountryCode, Gross.domestic.product.2012) -> survey.r
 glimpse(survey.r)
 head(survey.r,10)
 tail(survey.r, 10)
-unique(survey.r)
 
+#use grep to find word looked for
+grep("^United", survey.r$`long Name`)
+survey.r$`long Name`[grep("^United", survey.r$`long Name`)]
+survey.r[c(1,6,32),]
+
+```
+
+Question 4
+
+Load the Gross Domestic Product data for the 190 ranked countries in this data set:
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv
+
+Load the educational data from this data set:
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv
+
+Match the data based on the country shortcode. Of the countries for which the end of the fiscal year is available, how many end in June?
+
+Original data sources:
+
+http://data.worldbank.org/data-catalog/GDP-ranking-table
+
+http://data.worldbank.org/data-catalog/ed-stats
+
+```{r}
+
+# Download data using a URL into th data directory
+
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
+download.file(fileUrl, destfile = "./data/gdp")
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
+download.file(fileUrl, destfile = "./data/edu")
+dateDownloaded <- date()
+dateDownloaded
+list.files("./data")
+
+# Put data into a data frame or data table if very large, then look at the data 
+gdp.r <- data.frame(read.csv("./data/gdp", skip = 4, nrows = 231))
+colnames(gdp.r)[1] = c("CountryCode")
+edu.r <- data.frame(read.csv("./data/edu"))
+glimpse(gdp.r)
+glimpse(edu.r)
+head(gdp.r, 10)
+head(edu.r, 10)
+tail(gdp.r, 10)
+tail(edu.r, 40)
+view(gdp_edu)
+
+
+gdp_edu <- merge(gdp.r, edu.r)
+glimpse(gdp_edu)
+
+length( grep("Fiscal year end: June 30", gdp_edu$Special.Notes))
 
 
 ```
+
+
+QUestion 5
+You can use the quantmod (http://www.quantmod.com/) package to get historical stock prices for publicly traded companies on the NASDAQ and NYSE. Use the following code to download data on Amazon's stock price and get the times the data was sampled.
+
+  library(quantmod)
+  amzn = getSymbols("AMZN",auto.assign=FALSE)
+  sampleTimes = index(amzn)
+
+How many values were collected in 2012? How many values were collected on Mondays in 2012?
+
+```{r}
+
+library(quantmod)
+amzn = getSymbols("AMZN",auto.assign=FALSE)
+sampleTimes = index(amzn)
+sampleTimes
+class(sampleTimes)
+str(sampleTimes)
+head(sampleTimes)
+#Number of readings in 2012
+length(grep(2012, year(sampleTimes)))
+sampleTimes[grep(2012, year(sampleTimes))] -> daycalc
+#Number of Mondays
+length(grep(2, wday(daycalc)))
+
+
+```
+
